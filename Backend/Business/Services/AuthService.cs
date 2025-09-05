@@ -40,5 +40,22 @@ namespace ParkingApp2.Business.Services
 
             return usuario;
         }
+
+        public bool Login(string correo, string password)
+        {
+            // Buscar usuario por email
+            var usuario = _usuarioRepository.GetUsuarioByEmail(correo);
+            if (usuario == null)
+            {
+                return false;
+            }
+
+            // Verificar contraseña
+            using var hmac = new HMACSHA256(usuario.SaltContrasena);
+            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            var computedHash = Convert.ToBase64String(hash);
+
+            return computedHash == usuario.HashContrasena;
+        }
     }
 }
