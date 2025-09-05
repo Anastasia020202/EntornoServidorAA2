@@ -11,5 +11,6 @@ namespace ParkingApp2.Data.Repositories
         IEnumerable<Reserva> GetReservasByPlazaId(int plazaId);
         Reserva AddReserva(Reserva reserva);
         void DeleteReserva(int id);
+        void SaveChanges();
     }
 }
