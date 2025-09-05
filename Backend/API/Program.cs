@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ParkingApp2.Data;
 using ParkingApp2.Data.Repositories;
+using ParkingApp2.Business.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddDbContext<ParkingDbContext>(options =>
 
 // Registrar repositorios
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+// Registrar servicios de negocio
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 
