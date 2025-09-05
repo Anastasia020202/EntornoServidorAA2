@@ -6,5 +6,7 @@ namespace ParkingApp2.Models
         public string Numero { get; set; } = "";
         public bool Disponible { get; set; } = true;
         public decimal PrecioHora { get; set; }
+        
+        public List<Reserva>? Reservas { get; set; }
     }
 }

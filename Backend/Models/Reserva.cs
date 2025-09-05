@@ -10,5 +10,9 @@ namespace ParkingApp2.Models
         public int UsuarioId { get; set; }
         public int VehiculoId { get; set; }
         public int PlazaId { get; set; }
+        
+        public Usuario? Usuario { get; set; }
+        public Vehiculo? Vehiculo { get; set; }
+        public Plaza? Plaza { get; set; }
     }
 }
