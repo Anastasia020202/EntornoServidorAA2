@@ -9,5 +9,6 @@ namespace ParkingApp2.Data.Repositories
         IEnumerable<Reserva> GetReservasByUsuarioId(int usuarioId);
         IEnumerable<Reserva> GetReservasByVehiculoId(int vehiculoId);
         IEnumerable<Reserva> GetReservasByPlazaId(int plazaId);
+        Reserva AddReserva(Reserva reserva);
     }
 }
