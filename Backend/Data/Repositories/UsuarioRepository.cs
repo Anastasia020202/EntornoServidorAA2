@@ -60,5 +60,15 @@ namespace ParkingApp2.Data.Repositories
         {
             _context.SaveChanges();
         }
+
+        public void DeleteUsuario(int id)
+        {
+            var usuario = _context.Usuarios.Find(id);
+            if (usuario != null)
+            {
+                _context.Usuarios.Remove(usuario);
+                _context.SaveChanges();
+            }
+        }
     }
 }
