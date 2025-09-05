@@ -8,5 +8,6 @@ namespace ParkingApp2.Data.Repositories
         Usuario? GetUsuarioByEmail(string correo);
         Usuario AddUsuarioFromCredentials(string correo, string hash, byte[] salt);
         IEnumerable<Usuario> GetUsuarios(UsuarioQueryParameters query);
+        void SaveChanges();
     }
 }
