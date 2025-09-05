@@ -1,0 +1,46 @@
+using Microsoft.EntityFrameworkCore;
+using ParkingApp2.Models;
+
+namespace ParkingApp2.Data.Repositories
+{
+    public class PlazaRepository : IPlazaRepository
+    {
+        private readonly ParkingDbContext _context;
+
+        public PlazaRepository(ParkingDbContext context)
+        {
+            _context = context;
+        }
+
+        public Plaza? GetPlazaById(int id)
+        {
+            return _context.Plazas.Find(id);
+        }
+
+        public IEnumerable<Plaza> GetPlazas()
+        {
+            return _context.Plazas.ToList();
+        }
+
+        public Plaza AddPlaza(Plaza plaza)
+        {
+            _context.Plazas.Add(plaza);
+            return plaza;
+        }
+
+        public void DeletePlaza(int id)
+        {
+            var plaza = _context.Plazas.Find(id);
+            if (plaza != null)
+            {
+                _context.Plazas.Remove(plaza);
+                _context.SaveChanges();
+            }
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+    }
+}
