@@ -94,5 +94,4 @@ namespace ParkingApp2.API.Controllers
         public bool Disponible { get; set; } = true;
         public decimal PrecioHora { get; set; }
     }
-    }
 }
