@@ -18,6 +18,7 @@ builder.Services.AddDbContext<ParkingDbContext>(options =>
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IPlazaRepository, PlazaRepository>();
 builder.Services.AddScoped<IVehiculoRepository, VehiculoRepository>();
+builder.Services.AddScoped<IReservaRepository, ReservaRepository>();
 
 // Registrar servicios de negocio
 builder.Services.AddScoped<AuthService>();
