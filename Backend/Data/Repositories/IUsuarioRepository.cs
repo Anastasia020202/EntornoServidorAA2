@@ -6,5 +6,6 @@ namespace ParkingApp2.Data.Repositories
     {
         Usuario? GetUsuarioById(int id);
         Usuario? GetUsuarioByEmail(string correo);
+        Usuario AddUsuarioFromCredentials(string correo, string hash, byte[] salt);
     }
 }
