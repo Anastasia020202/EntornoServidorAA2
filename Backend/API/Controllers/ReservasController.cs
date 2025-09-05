@@ -131,5 +131,4 @@ namespace ParkingApp2.API.Controllers
         public int VehiculoId { get; set; }
         public int PlazaId { get; set; }
     }
-    }
 }
