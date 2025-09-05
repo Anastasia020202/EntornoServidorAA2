@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ParkingApp2.Data;
+using ParkingApp2.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,9 @@ builder.Services.AddSwaggerGen();
 // Configurar EF Core con BBDD en memoria
 builder.Services.AddDbContext<ParkingDbContext>(options =>
     options.UseInMemoryDatabase("ParkingDb"));
+
+// Registrar repositorios
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 var app = builder.Build();
 
