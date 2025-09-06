@@ -1,25 +1,37 @@
 @API_HostAddress = http://localhost:5084
 @Token = 
 
-### 1. REGISTRO DE USUARIO
+### 1. REGISTRO DE USUARIO NORMAL
 POST {{API_HostAddress}}/api/auth/register
 Content-Type: application/json
 
 {
-  "correo": "admin@parking.com",
-  "password": "admin123"
+  "correo": "usuario@parking.com",
+  "contrasena": "usuario123"
 }
 
-### 2. LOGIN DE USUARIO
-POST {{API_HostAddress}}/api/auth/login
+### 2. CREAR ADMIN (Solo para desarrollo inicial)
+POST {{API_HostAddress}}/api/auth/create-admin
 Content-Type: application/json
 
 {
   "correo": "admin@parking.com",
-  "password": "admin123"
+  "contrasena": "admin123"
 }
 
-### 3. CREAR PLAZA (Requiere Admin)
+### 3. LOGIN DE USUARIO
+POST {{API_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "correo": "usuario@parking.com",
+  "contrasena": "usuario123"
+}
+
+### 4. LISTAR PLAZAS (ZONA PÚBLICA - Sin autenticación)
+GET {{API_HostAddress}}/api/plazas
+
+### 5. CREAR PLAZA (Requiere Admin)
 POST {{API_HostAddress}}/api/plazas
 Content-Type: application/json
 Authorization: Bearer {{Token}}
@@ -30,11 +42,7 @@ Authorization: Bearer {{Token}}
   "precioHora": 2.50
 }
 
-### 4. LISTAR PLAZAS (Requiere Admin)
-GET {{API_HostAddress}}/api/plazas
-Authorization: Bearer {{Token}}
-
-### 5. CREAR VEHÍCULO (Requiere Admin)
+### 6. CREAR VEHÍCULO (Usuario autenticado)
 POST {{API_HostAddress}}/api/vehiculos
 Content-Type: application/json
 Authorization: Bearer {{Token}}
@@ -42,15 +50,18 @@ Authorization: Bearer {{Token}}
 {
   "matricula": "NDL3306",
   "marca": "BMW",
-  "modelo": "X2",
-  "usuarioId": 1
+  "modelo": "X2"
 }
 
-### 6. LISTAR VEHÍCULOS (Requiere Admin)
+### 7. VER MIS VEHÍCULOS (Usuario autenticado)
+GET {{API_HostAddress}}/api/vehiculos/usuario/1
+Authorization: Bearer {{Token}}
+
+### 8. LISTAR TODOS LOS VEHÍCULOS (Requiere Admin)
 GET {{API_HostAddress}}/api/vehiculos
 Authorization: Bearer {{Token}}
 
-### 7. CREAR RESERVA (Requiere Admin)
+### 9. CREAR RESERVA (Usuario autenticado)
 POST {{API_HostAddress}}/api/reservas
 Content-Type: application/json
 Authorization: Bearer {{Token}}
@@ -58,21 +69,23 @@ Authorization: Bearer {{Token}}
 {
   "fechaInicio": "2024-01-15T10:00:00",
   "fechaFin": "2024-01-15T12:00:00",
-  "totalAPagar": 5.00,
-  "estado": "Pendiente",
   "usuarioId": 1,
   "vehiculoId": 1,
   "plazaId": 1
 }
 
-### 8. LISTAR RESERVAS (Requiere Admin)
+### 10. VER MIS RESERVAS (Usuario autenticado)
+GET {{API_HostAddress}}/api/reservas/usuario/1
+Authorization: Bearer {{Token}}
+
+### 11. LISTAR TODAS LAS RESERVAS (Requiere Admin)
 GET {{API_HostAddress}}/api/reservas
 Authorization: Bearer {{Token}}
 
-### 9. LISTAR USUARIOS (Requiere Admin)
+### 12. LISTAR USUARIOS (Requiere Admin)
 GET {{API_HostAddress}}/api/usuarios
 Authorization: Bearer {{Token}}
 
-### 10. OBTENER USUARIO POR ID (Requiere Admin)
+### 13. OBTENER USUARIO POR ID (Requiere Admin)
 GET {{API_HostAddress}}/api/usuarios/1
 Authorization: Bearer {{Token}}
