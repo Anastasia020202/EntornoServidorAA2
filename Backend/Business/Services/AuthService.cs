@@ -44,13 +44,13 @@ namespace ParkingApp2.Business.Services
             return usuario;
         }
 
-        public bool Login(string correo, string password)
+        public Usuario? Login(string correo, string password)
         {
             // Buscar usuario por email
             var usuario = _usuarioRepository.GetUsuarioByEmail(correo);
             if (usuario == null)
             {
-                return false;
+                return null;
             }
 
             // Verificar contraseña
@@ -58,7 +58,12 @@ namespace ParkingApp2.Business.Services
             var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             var computedHash = Convert.ToBase64String(hash);
 
-            return computedHash == usuario.HashContrasena;
+            if (computedHash == usuario.HashContrasena)
+            {
+                return usuario;
+            }
+
+            return null;
         }
 
         public string GenerateJwtToken(Usuario usuario)

@@ -31,10 +31,19 @@ namespace ParkingApp2.API.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            var isValid = _authService.Login(request.Correo, request.Password);
-            if (isValid)
+            var usuario = _authService.Login(request.Correo, request.Password);
+            if (usuario != null)
             {
-                return Ok(new { message = "Login exitoso" });
+                var token = _authService.GenerateJwtToken(usuario);
+                return Ok(new { 
+                    message = "Login exitoso", 
+                    token = token,
+                    usuario = new { 
+                        id = usuario.Id, 
+                        correo = usuario.Correo, 
+                        rol = usuario.Rol 
+                    }
+                });
             }
             return Unauthorized(new { message = "Credenciales inválidas" });
         }
