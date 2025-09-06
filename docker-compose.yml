@@ -11,14 +11,14 @@ services:
       MYSQL_USER: parkinguser
       MYSQL_PASSWORD: parkingpass
     ports:
-      - "3306:3306"
+      - "8317:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./Backend/Data/Migrations:/docker-entrypoint-initdb.d
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0
 
   api:
-    build: ./Backend
+    build: .
     container_name: parkingapp2_api
     restart: always
     ports:

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@vueuse/core": "^13.9.0",
+    "axios": "^1.11.0"
+  }
+}
