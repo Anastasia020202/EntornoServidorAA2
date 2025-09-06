@@ -7,7 +7,7 @@ namespace ParkingApp2.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class ReservasController : ControllerBase
     {
         private readonly IReservaRepository _reservaRepository;
@@ -18,6 +18,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAllReservas()
         {
             var reservas = _reservaRepository.GetReservas();
@@ -43,6 +44,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet("vehiculo/{vehiculoId}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetReservasByVehiculo(int vehiculoId)
         {
             var reservas = _reservaRepository.GetReservasByVehiculoId(vehiculoId);
@@ -50,6 +52,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet("plaza/{plazaId}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetReservasByPlaza(int plazaId)
         {
             var reservas = _reservaRepository.GetReservasByPlazaId(plazaId);
