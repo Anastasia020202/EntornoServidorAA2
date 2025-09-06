@@ -10,8 +10,8 @@ Content-Type: application/json
   "contrasena": "usuario123"
 }
 
-### 2. CREAR ADMIN (Solo para desarrollo inicial)
-POST {{API_HostAddress}}/api/auth/create-admin
+### 2. LOGIN DE ADMIN (Por defecto: admin@parking.com / admin123)
+POST {{API_HostAddress}}/api/auth/login
 Content-Type: application/json
 
 {

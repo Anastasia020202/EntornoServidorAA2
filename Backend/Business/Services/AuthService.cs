@@ -45,25 +45,6 @@ namespace ParkingApp2.Business.Services
             return usuario;
         }
 
-        public Usuario CreateAdmin(string correo, string password)
-        {
-            // Verificar si el usuario ya existe
-            var existingUser = _usuarioRepository.GetUsuarioByEmail(correo);
-            if (existingUser != null)
-            {
-                throw new InvalidOperationException("El usuario ya existe");
-            }
-
-            // Hashear la contraseña
-            var (hash, salt) = HashPassword(password);
-
-            // Crear nuevo usuario con rol "Admin"
-            var usuario = _usuarioRepository.AddUsuarioFromCredentials(correo, hash, salt);
-            usuario.Rol = Roles.Admin; // Asignar rol Admin
-            _usuarioRepository.SaveChanges();
-
-            return usuario;
-        }
 
         public Usuario? Login(string correo, string password)
         {

@@ -6,13 +6,47 @@ using ParkingApp2.Data;
 using ParkingApp2.Data.Repositories;
 using ParkingApp2.Business.Services;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "ParkingApp2 API",
+        Version = "v1",
+        Description = "API RESTful para gestión de aparcamiento con autenticación JWT"
+    });
+
+    // Configurar autenticación JWT en Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header usando el esquema Bearer. Ejemplo: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 // Configurar EF Core con MySQL
 builder.Services.AddDbContext<ParkingDbContext>(options =>
@@ -59,11 +93,13 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Swagger disponible en todos los entornos para facilitar pruebas
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkingApp2 API V1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseHttpsRedirection();
 
@@ -72,4 +108,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+// Configurar puerto desde variable de entorno
+var port = Environment.GetEnvironmentVariable("PORT") ?? "7138";
+app.Run($"http://0.0.0.0:{port}");

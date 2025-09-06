@@ -43,6 +43,29 @@ namespace ParkingApp2.Data
                 .WithOne(r => r.Plaza)
                 .HasForeignKey(r => r.PlazaId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Crear admin por defecto
+            SeedDefaultAdmin(modelBuilder);
         }
+
+        private void SeedDefaultAdmin(ModelBuilder modelBuilder)
+        {
+            // Admin por defecto: admin@parking.com / admin123
+            // Hash y salt estáticos para evitar cambios en el modelo
+            var hash = "Zs37u7MYrBsWJk4BoZ9b/jTYIoLQBWquKmbCkxoO7MM=";
+            var salt = Convert.FromBase64String("AfyZXFBOpYP6bqnk3dDZCyc67L5lHYoCiP6KQffR13YPHpW8YZCblSbEzyEQixh6auWLl40vP6HRSyPXK5UwxQ==");
+            
+            modelBuilder.Entity<Usuario>().HasData(
+                new Usuario
+                {
+                    Id = 1,
+                    Correo = "admin@parking.com",
+                    HashContrasena = hash,
+                    SaltContrasena = salt,
+                    Rol = Roles.Admin
+                }
+            );
+        }
+
     }
 }

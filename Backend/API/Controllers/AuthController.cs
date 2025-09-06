@@ -49,19 +49,7 @@ namespace ParkingApp2.API.Controllers
             return Unauthorized(new { message = "Credenciales inválidas" });
         }
 
-        [HttpPost("create-admin")]
-        public IActionResult CreateAdmin([FromBody] UsuarioCreateDto request)
-        {
-            try
-            {
-                var usuario = _authService.CreateAdmin(request.Correo, request.Contrasena);
-                return Ok(new { message = "Admin creado correctamente", usuarioId = usuario.Id, rol = usuario.Rol });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+
     }
 
 }
