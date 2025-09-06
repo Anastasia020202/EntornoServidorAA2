@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ParkingApp2.Business.Services;
+using ParkingApp2.Models.DTOs;
 
 namespace ParkingApp2.API.Controllers
 {
@@ -15,11 +16,11 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterRequest request)
+        public IActionResult Register([FromBody] UsuarioCreateDto request)
         {
             try
             {
-                var usuario = _authService.Register(request.Correo, request.Password);
+                var usuario = _authService.Register(request.Correo, request.Contrasena);
                 return Ok(new { message = "Usuario registrado correctamente", usuarioId = usuario.Id });
             }
             catch (InvalidOperationException ex)
@@ -29,9 +30,9 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public IActionResult Login([FromBody] UsuarioLoginDto request)
         {
-            var usuario = _authService.Login(request.Correo, request.Password);
+            var usuario = _authService.Login(request.Correo, request.Contrasena);
             if (usuario != null)
             {
                 var token = _authService.GenerateJwtToken(usuario);
@@ -49,15 +50,4 @@ namespace ParkingApp2.API.Controllers
         }
     }
 
-    public class RegisterRequest
-    {
-        public string Correo { get; set; } = "";
-        public string Password { get; set; } = "";
-    }
-
-    public class LoginRequest
-    {
-        public string Correo { get; set; } = "";
-        public string Password { get; set; } = "";
-    }
 }

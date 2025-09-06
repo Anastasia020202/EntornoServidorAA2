@@ -13,4 +13,3 @@ namespace ParkingApp2.Models.DTOs
         public string? Rol { get; set; }
     }
 }
-?
