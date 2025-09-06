@@ -111,3 +111,4 @@ export const usePlazasStore = defineStore('plazas', () => {
     getPlazasOcupadas
   };
 });
+
