@@ -1,22 +1,24 @@
-# Etapa de compilación
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 7138
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+COPY ["ParkingApp2.sln", "."]
+COPY ["Backend/API/API.csproj", "Backend/API/"]
+COPY ["Backend/Business/Business.csproj", "Backend/Business/"]
+COPY ["Backend/Data/Data.csproj", "Backend/Data/"]
+COPY ["Backend/Models/Models.csproj", "Backend/Models/"]
 
-# Copiar todo el código
+RUN dotnet restore "ParkingApp2.sln"
 COPY . .
+WORKDIR "/src"
+RUN dotnet build "ParkingApp2.sln" -c Release -o /app/build
 
-# Restaurar todos los paquetes desde la solución
-RUN dotnet restore ParkingApp2.sln
+FROM build AS publish
+RUN dotnet publish "ParkingApp2.sln" -c Release -o /app/publish
 
-# Compilar y publicar la API
-RUN dotnet build Backend/API/API.csproj -c Release
-RUN dotnet publish Backend/API/API.csproj -c Release -o /app/publish
-
-# Etapa final
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM base AS final
 WORKDIR /app
-
-COPY --from=build /app/publish .
-
-EXPOSE 7138
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "API.dll"]

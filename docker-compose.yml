@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: parkingapp2_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ParkingApp2Db
+      MYSQL_USER: parkinguser
+      MYSQL_PASSWORD: parkingpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Backend/Data/Migrations:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+
+  api:
+    build: ./Backend
+    container_name: parkingapp2_api
+    restart: always
+    ports:
+      - "7138:7138"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=mysql;Database=ParkingApp2Db;User=parkinguser;Password=parkingpass;Port=3306;
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:

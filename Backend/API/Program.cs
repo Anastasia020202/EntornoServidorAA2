@@ -5,6 +5,7 @@ using System.Text;
 using ParkingApp2.Data;
 using ParkingApp2.Data.Repositories;
 using ParkingApp2.Business.Services;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +14,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configurar EF Core con BBDD en memoria
+// Configurar EF Core con MySQL
 builder.Services.AddDbContext<ParkingDbContext>(options =>
-    options.UseInMemoryDatabase("ParkingDb"));
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 21))
+    ));
 
 // Registrar repositorios
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
@@ -47,11 +51,11 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Migraciones automáticas para BBDD en memoria
+// Migraciones automáticas para MySQL
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ParkingDbContext>();
-    db.Database.EnsureCreated();
+    db.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.
