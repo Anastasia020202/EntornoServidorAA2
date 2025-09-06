@@ -25,7 +25,7 @@ namespace ParkingApp2.Business.Services
             return (Convert.ToBase64String(hash), salt);
         }
 
-        public Usuario Register(string correo, string password)
+        public Usuario Register(string correo, string password, string? rol = null)
         {
             // Verificar si el usuario ya existe
             var existingUser = _usuarioRepository.GetUsuarioByEmail(correo);
@@ -37,9 +37,19 @@ namespace ParkingApp2.Business.Services
             // Hashear la contraseña
             var (hash, salt) = HashPassword(password);
 
-            // Crear nuevo usuario con rol "User" por defecto
+            // Crear nuevo usuario
             var usuario = _usuarioRepository.AddUsuarioFromCredentials(correo, hash, salt);
-            usuario.Rol = Roles.User; // Asegurar que siempre sea User
+            
+            // Asignar rol (User por defecto, Admin si se especifica)
+            if (!string.IsNullOrEmpty(rol) && rol.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                usuario.Rol = Roles.Admin;
+            }
+            else
+            {
+                usuario.Rol = Roles.User;
+            }
+            
             _usuarioRepository.SaveChanges();
 
             return usuario;

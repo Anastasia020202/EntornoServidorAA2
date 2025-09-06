@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParkingApp2.Data.Repositories;
 using ParkingApp2.Models;
+using ParkingApp2.Models.DTOs;
 
 namespace ParkingApp2.API.Controllers
 {
@@ -36,13 +37,14 @@ namespace ParkingApp2.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult CreatePlaza([FromBody] CreatePlazaRequest request)
+        public IActionResult CreatePlaza([FromBody] PlazaCreateDto request)
         {
             var plaza = new Plaza
             {
                 Numero = request.Numero,
+                Tipo = request.Tipo,
                 Disponible = request.Disponible,
-                PrecioHora = request.PrecioHora
+                PrecioHora = request.TarifaHora
             };
 
             _plazaRepository.AddPlaza(plaza);
@@ -53,7 +55,7 @@ namespace ParkingApp2.API.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult UpdatePlaza(int id, [FromBody] UpdatePlazaRequest request)
+        public IActionResult UpdatePlaza(int id, [FromBody] PlazaUpdateDto request)
         {
             var plaza = _plazaRepository.GetPlazaById(id);
             if (plaza == null)
@@ -62,8 +64,9 @@ namespace ParkingApp2.API.Controllers
             }
 
             plaza.Numero = request.Numero;
+            plaza.Tipo = request.Tipo;
             plaza.Disponible = request.Disponible;
-            plaza.PrecioHora = request.PrecioHora;
+            plaza.PrecioHora = request.TarifaHora;
             _plazaRepository.SaveChanges();
 
             return Ok(plaza);
@@ -83,19 +86,5 @@ namespace ParkingApp2.API.Controllers
 
             return NoContent();
         }
-    }
-
-    public class CreatePlazaRequest
-    {
-        public string Numero { get; set; } = "";
-        public bool Disponible { get; set; } = true;
-        public decimal PrecioHora { get; set; }
-    }
-
-    public class UpdatePlazaRequest
-    {
-        public string Numero { get; set; } = "";
-        public bool Disponible { get; set; } = true;
-        public decimal PrecioHora { get; set; }
     }
 }

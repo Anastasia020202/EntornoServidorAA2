@@ -8,7 +8,7 @@ namespace ParkingApp2.Models.DTOs
         public string Numero { get; set; } = "";
 
         [Required, MaxLength(50)]
-        public string Zona { get; set; } = "General";
+        public string Tipo { get; set; } = "Estándar";
 
         [Required]
         public decimal TarifaHora { get; set; }

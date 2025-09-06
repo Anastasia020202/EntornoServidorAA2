@@ -20,8 +20,8 @@ namespace ParkingApp2.API.Controllers
         {
             try
             {
-                var usuario = _authService.Register(request.Correo, request.Contrasena);
-                return Ok(new { message = "Usuario registrado correctamente", usuarioId = usuario.Id });
+                var usuario = _authService.Register(request.Correo, request.Contrasena, request.Rol);
+                return Ok(new { message = "Usuario registrado correctamente", usuarioId = usuario.Id, rol = usuario.Rol });
             }
             catch (InvalidOperationException ex)
             {
