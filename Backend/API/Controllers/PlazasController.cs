@@ -7,7 +7,6 @@ namespace ParkingApp2.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
     public class PlazasController : ControllerBase
     {
         private readonly IPlazaRepository _plazaRepository;
@@ -36,6 +35,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreatePlaza([FromBody] CreatePlazaRequest request)
         {
             var plaza = new Plaza
@@ -52,6 +52,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult UpdatePlaza(int id, [FromBody] UpdatePlazaRequest request)
         {
             var plaza = _plazaRepository.GetPlazaById(id);
@@ -69,6 +70,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeletePlaza(int id)
         {
             var plaza = _plazaRepository.GetPlazaById(id);
