@@ -7,7 +7,7 @@ namespace ParkingApp2.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class VehiculosController : ControllerBase
     {
         private readonly IVehiculoRepository _vehiculoRepository;
@@ -18,6 +18,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAllVehiculos()
         {
             var vehiculos = _vehiculoRepository.GetVehiculos();
@@ -36,6 +37,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet("matricula/{matricula}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetVehiculoByMatricula(string matricula)
         {
             var vehiculo = _vehiculoRepository.GetVehiculoByMatricula(matricula);
