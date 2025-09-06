@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParkingApp2.Data.Repositories;
 using ParkingApp2.Models;
@@ -6,6 +7,7 @@ namespace ParkingApp2.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     public class VehiculosController : ControllerBase
     {
         private readonly IVehiculoRepository _vehiculoRepository;
