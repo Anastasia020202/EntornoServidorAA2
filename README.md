@@ -23,7 +23,7 @@ ParkingApp2/
 - **JWT Authentication**
 - **Docker & Docker Compose**
 - **Swagger/OpenAPI**
-- **Pomelo MySQL Provider**
+- **MySQL**
 
 
 ## Instalación y Ejecución
