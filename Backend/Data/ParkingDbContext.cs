@@ -62,7 +62,9 @@ namespace ParkingApp2.Data
                     Correo = "admin@parking.com",
                     HashContrasena = hash,
                     SaltContrasena = salt,
-                    Rol = Roles.Admin
+                    Rol = Roles.Admin,
+                    FechaCreacion = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                    Activo = true
                 }
             );
         }
