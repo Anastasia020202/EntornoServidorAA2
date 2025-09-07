@@ -19,14 +19,22 @@ namespace ParkingApp2.API.Controllers
 
         [HttpGet]
         [AllowAnonymous] // Zona pública - información de plazas disponible para todos
-        public IActionResult GetAllPlazas()
+        public IActionResult GetAllPlazas([FromQuery] string? tipo = null, [FromQuery] bool? disponible = null)
         {
-            var plazas = _plazaRepository.GetPlazas();
+            var plazas = _plazaRepository.GetPlazas(tipo, disponible);
+            return Ok(plazas);
+        }
+
+        [HttpGet("tipo/{tipo}")]
+        [AllowAnonymous] // Zona pública - buscar plazas por tipo específico (discapacitados, moto, estándar, eléctrica, vip)
+        public IActionResult GetPlazasByTipo(string tipo, [FromQuery] bool? disponible = null)
+        {
+            var plazas = _plazaRepository.GetPlazas(tipo, disponible);
             return Ok(plazas);
         }
 
         [HttpGet("{id}")]
-        [AllowAnonymous] // Zona pública - información de plaza específica disponible para todos
+        [Authorize(Roles = "User,Admin")] // Zona privada - información de plaza específica solo para usuarios autenticados
         public IActionResult GetPlazaById(int id)
         {
             var plaza = _plazaRepository.GetPlazaById(id);
