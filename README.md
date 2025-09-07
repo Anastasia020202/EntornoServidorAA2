@@ -91,26 +91,32 @@ ParkingApp2/
 ### Endpoints por Zona
 
 ####  Zona Pública (Sin autenticación)
-- `GET /api/plazas` - Listar todas las plazas (con filtros opcionales)
-- `GET /api/plazas?tipo=estandar` - Filtrar plazas por tipo
-- `GET /api/plazas?disponible=true` - Filtrar plazas disponibles
-- `GET /api/plazas/tipo/estandar` - Buscar plazas estándar
-- `GET /api/plazas/tipo/moto` - Buscar plazas para motos
-- `GET /api/plazas/tipo/discapacitados` - Buscar plazas para discapacitados
-- `GET /api/plazas/tipo/electrico` - Buscar plazas eléctricas
-- `GET /api/plazas/tipo/vip` - Buscar plazas VIP
+- `GET /api/plazas` - Listar todas las plazas disponibles
+- `GET /api/plazas?tipo=estandar` - Filtrar plazas disponibles por tipo
+- `GET /api/plazas/tipo/estandar` - Buscar plazas estándar disponibles
+- `GET /api/plazas/tipo/moto` - Buscar plazas para motos disponibles
+- `GET /api/plazas/tipo/discapacitados` - Buscar plazas para discapacitados disponibles
+- `GET /api/plazas/tipo/electrico` - Buscar plazas eléctricas disponibles
+- `GET /api/plazas/tipo/vip` - Buscar plazas VIP disponibles
 - `POST /api/auth/login` - Iniciar sesión
 - `POST /api/auth/register` - Registrarse
 
-**💡 Lógica de Negocio**: Los usuarios no identificados pueden ver y buscar plazas disponibles por tipo para decidir si registrarse y hacer una reserva.
+**💡 Lógica de Negocio**: Los usuarios no identificados solo ven plazas disponibles para decidir si registrarse y hacer una reserva.
 
 ####  Zona Privada (Requiere autenticación)
 - `GET /api/plazas/{id}` - Obtener plaza específica (User/Admin)
 - `GET /api/reservas/mis-reservas` - Mis reservas (User/Admin)
 - `GET /api/vehiculos/mis-vehiculos` - Mis vehículos (User/Admin)
-- `GET /api/usuarios` - Listar usuarios (Admin)
 - `POST /api/reservas` - Crear reserva (User/Admin)
 - `PUT /api/reservas/{id}` - Actualizar reserva (User/Admin)
+
+####  Zona de Administración (Solo Admin)
+- `GET /api/plazas/admin` - Ver todas las plazas con filtros completos (disponible=true/false)
+- `GET /api/plazas/admin?tipo=estandar&disponible=false` - Ver plazas ocupadas por tipo
+- `GET /api/usuarios` - Listar usuarios
+- `POST /api/plazas` - Crear plaza
+- `PUT /api/plazas/{id}` - Actualizar plaza
+- `DELETE /api/plazas/{id}` - Eliminar plaza
 
 ##  Modelo de Datos
 
@@ -174,15 +180,16 @@ ParkingApp2/
 - `DELETE /api/usuarios/{id}` - Eliminar usuario
 
 ### Plazas
-- `GET /api/plazas` - Listar todas las plazas (con filtros opcionales) - **Público**
-- `GET /api/plazas?tipo=estandar` - Filtrar plazas por tipo (Estándar, Moto, Discapacitados, Eléctrico, VIP) - **Público**
-- `GET /api/plazas?disponible=true` - Filtrar solo plazas disponibles - **Público**
-- `GET /api/plazas/tipo/estandar` - Buscar plazas estándar - **Público**
-- `GET /api/plazas/tipo/moto` - Buscar plazas para motos - **Público**
-- `GET /api/plazas/tipo/discapacitados` - Buscar plazas para discapacitados - **Público**
-- `GET /api/plazas/tipo/electrico` - Buscar plazas eléctricas - **Público**
-- `GET /api/plazas/tipo/vip` - Buscar plazas VIP - **Público**
+- `GET /api/plazas` - Listar todas las plazas disponibles - **Público**
+- `GET /api/plazas?tipo=estandar` - Filtrar plazas disponibles por tipo - **Público**
+- `GET /api/plazas/tipo/estandar` - Buscar plazas estándar disponibles - **Público**
+- `GET /api/plazas/tipo/moto` - Buscar plazas para motos disponibles - **Público**
+- `GET /api/plazas/tipo/discapacitados` - Buscar plazas para discapacitados disponibles - **Público**
+- `GET /api/plazas/tipo/electrico` - Buscar plazas eléctricas disponibles - **Público**
+- `GET /api/plazas/tipo/vip` - Buscar plazas VIP disponibles - **Público**
 - `GET /api/plazas/{id}` - Obtener plaza específica - **Privado (User/Admin)**
+- `GET /api/plazas/admin` - Ver todas las plazas con filtros completos - **Admin**
+- `GET /api/plazas/admin?disponible=false` - Ver plazas ocupadas - **Admin**
 
 ### Vehículos
 - `GET /api/vehiculos/mis-vehiculos` - Mis vehículos
@@ -199,40 +206,49 @@ ParkingApp2/
 
 ### Ejemplos de Uso
 
-#### 🔍 Para Usuarios No Identificados (Público)
+#### Para Usuarios No Identificados (Público)
 ```bash
-# Ver todas las plazas disponibles
-GET /api/plazas?disponible=true
+# Ver todas las plazas disponibles (por defecto)
+GET /api/plazas
 
 # Buscar plazas para discapacitados disponibles
-GET /api/plazas/tipo/discapacitados?disponible=true
+GET /api/plazas/tipo/discapacitados
 
 # Buscar plazas para motos disponibles
-GET /api/plazas/tipo/moto?disponible=true
+GET /api/plazas/tipo/moto
 
 # Buscar plazas estándar disponibles
-GET /api/plazas/tipo/estandar?disponible=true
+GET /api/plazas/tipo/estandar
 
 # Buscar plazas eléctricas disponibles
-GET /api/plazas/tipo/electrico?disponible=true
+GET /api/plazas/tipo/electrico
 
 # Buscar plazas VIP disponibles
-GET /api/plazas/tipo/vip?disponible=true
-```
+GET /api/plazas/tipo/vip
 
-#### 🔧 Filtros Avanzados (Query Parameters)
-```bash
 # Filtrar por tipo específico
 GET /api/plazas?tipo=estandar
-
-# Filtrar por disponibilidad
-GET /api/plazas?disponible=true
-
-# Combinar filtros
-GET /api/plazas?tipo=estandar&disponible=true
 ```
 
-#### 🎯 Casos de Uso Reales
+#### Para Administradores (Solo Admin)
+```bash
+# Ver todas las plazas (disponibles y ocupadas)
+GET /api/plazas/admin
+
+# Ver solo plazas ocupadas
+GET /api/plazas/admin?disponible=false
+
+# Ver plazas estándar ocupadas
+GET /api/plazas/admin?tipo=estandar&disponible=false
+
+# Ver plazas VIP disponibles
+GET /api/plazas/admin?tipo=vip&disponible=true
+
+# Ver todas las plazas eléctricas
+GET /api/plazas/admin?tipo=electrico
+```
+
+####  Casos de Uso Reales
 ```bash
 # Usuario busca plaza para moto disponible
 GET /api/plazas/tipo/moto?disponible=true
