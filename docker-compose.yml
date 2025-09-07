@@ -16,6 +16,10 @@ services:
       - mysql_data:/var/lib/mysql
       - ./Backend/Data/Migrations:/docker-entrypoint-initdb.d
     command: --default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
   api:
     build: .
@@ -25,8 +29,10 @@ services:
       - "7138:7138"
     environment:
       - ConnectionStrings__DefaultConnection=Server=mysql;Database=ParkingApp2Db;User=parkinguser;Password=parkingpass;Port=3306;
+      - ASPNETCORE_URLS=http://+:7138
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
 volumes:
   mysql_data:

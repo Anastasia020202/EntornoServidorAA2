@@ -33,9 +33,15 @@ namespace ParkingApp2.Data.Migrations
                     b.Property<bool>("Disponible")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<DateTime>("FechaAlta")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Numero")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("Planta")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("PrecioHora")
                         .HasColumnType("decimal(65,30)");
@@ -98,9 +104,15 @@ namespace ParkingApp2.Data.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Activo")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Correo")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("HashContrasena")
                         .IsRequired()
@@ -122,7 +134,9 @@ namespace ParkingApp2.Data.Migrations
                         new
                         {
                             Id = 1,
+                            Activo = true,
                             Correo = "admin@parking.com",
+                            FechaCreacion = new DateTime(2025, 9, 7, 12, 39, 39, 617, DateTimeKind.Utc).AddTicks(2381),
                             HashContrasena = "Zs37u7MYrBsWJk4BoZ9b/jTYIoLQBWquKmbCkxoO7MM=",
                             Rol = "Admin",
                             SaltContrasena = new byte[] { 1, 252, 153, 92, 80, 78, 165, 131, 250, 110, 169, 228, 221, 208, 217, 11, 39, 58, 236, 190, 101, 29, 138, 2, 136, 254, 138, 65, 247, 209, 215, 118, 15, 30, 149, 188, 97, 144, 155, 149, 38, 196, 207, 33, 16, 139, 24, 122, 106, 229, 139, 151, 141, 47, 63, 161, 209, 75, 35, 215, 43, 149, 48, 197 }
@@ -136,6 +150,12 @@ namespace ParkingApp2.Data.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("Kilometros")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Marca")
                         .IsRequired()

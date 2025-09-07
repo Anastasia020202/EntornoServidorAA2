@@ -88,7 +88,8 @@ namespace ParkingApp2.Business.Services
                 { 
                     new Claim(ClaimTypes.Name, usuario.Id.ToString()),
                     new Claim(ClaimTypes.Email, usuario.Correo),
-                    new Claim(ClaimTypes.Role, usuario.Rol)
+                    new Claim(ClaimTypes.Role, usuario.Rol),
+                    new Claim("userId", usuario.Id.ToString()) // Para acceso fácil en controladores
                 }),
                 Expires = DateTime.UtcNow.AddHours(24),
                 Issuer = "ParkingApp2",

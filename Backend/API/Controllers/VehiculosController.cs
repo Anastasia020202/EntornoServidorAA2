@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParkingApp2.Data.Repositories;
 using ParkingApp2.Models;
+using System.Security.Claims;
 
 namespace ParkingApp2.API.Controllers
 {
@@ -49,8 +50,24 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet("usuario/{usuarioId}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetVehiculosByUsuario(int usuarioId)
         {
+            var vehiculos = _vehiculoRepository.GetVehiculosByUsuarioId(usuarioId);
+            return Ok(vehiculos);
+        }
+
+        [HttpGet("mis-vehiculos")]
+        [Authorize(Roles = "User,Admin")] // Zona privada - usuarios pueden ver sus propios vehículos
+        public IActionResult GetMisVehiculos()
+        {
+            // Obtener el ID del usuario del token JWT
+            var usuarioIdClaim = User.FindFirst("userId")?.Value ?? User.FindFirst(ClaimTypes.Name)?.Value;
+            if (string.IsNullOrEmpty(usuarioIdClaim) || !int.TryParse(usuarioIdClaim, out int usuarioId))
+            {
+                return Unauthorized(new { message = "Token inválido" });
+            }
+
             var vehiculos = _vehiculoRepository.GetVehiculosByUsuarioId(usuarioId);
             return Ok(vehiculos);
         }

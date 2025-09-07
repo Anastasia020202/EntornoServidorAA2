@@ -18,9 +18,19 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllUsuarios()
+        public IActionResult GetAllUsuarios([FromQuery] string? rol = null, [FromQuery] string? searchTerm = null, 
+            [FromQuery] int page = 1, [FromQuery] int pageSize = 10, 
+            [FromQuery] string? sortBy = null, [FromQuery] string? direction = "asc")
         {
-            var query = new UsuarioQueryParameters();
+            var query = new UsuarioQueryParameters
+            {
+                Rol = rol,
+                SearchTerm = searchTerm,
+                Page = page,
+                PageSize = pageSize,
+                SortBy = sortBy,
+                Direction = direction
+            };
             var usuarios = _usuarioRepository.GetUsuarios(query);
             return Ok(usuarios);
         }

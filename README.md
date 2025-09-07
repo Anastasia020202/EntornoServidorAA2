@@ -14,7 +14,7 @@ ParkingApp2/
 │   └── Migrations/         # Migraciones de base de datos
 ├── docker-compose.yml      # Orquestación de servicios
 └── README.md
-```
+```sa
 
 ##  Tecnologías Utilizadas
 

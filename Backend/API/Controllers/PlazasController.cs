@@ -18,6 +18,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous] // Zona pública - información de plazas disponible para todos
         public IActionResult GetAllPlazas()
         {
             var plazas = _plazaRepository.GetPlazas();
@@ -25,6 +26,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous] // Zona pública - información de plaza específica disponible para todos
         public IActionResult GetPlazaById(int id)
         {
             var plaza = _plazaRepository.GetPlazaById(id);

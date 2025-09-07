@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ParkingApp2.Data.Repositories;
 using ParkingApp2.Models;
 using ParkingApp2.Models.DTOs;
+using System.Security.Claims;
 
 namespace ParkingApp2.API.Controllers
 {
@@ -54,8 +55,24 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet("usuario/{usuarioId}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetReservasByUsuario(int usuarioId)
         {
+            var reservas = _reservaRepository.GetReservasByUsuarioId(usuarioId);
+            return Ok(reservas);
+        }
+
+        [HttpGet("mis-reservas")]
+        [Authorize(Roles = "User,Admin")] // Zona privada - usuarios pueden ver sus propias reservas
+        public IActionResult GetMisReservas()
+        {
+            // Obtener el ID del usuario del token JWT
+            var usuarioIdClaim = User.FindFirst("userId")?.Value ?? User.FindFirst(ClaimTypes.Name)?.Value;
+            if (string.IsNullOrEmpty(usuarioIdClaim) || !int.TryParse(usuarioIdClaim, out int usuarioId))
+            {
+                return Unauthorized(new { message = "Token inválido" });
+            }
+
             var reservas = _reservaRepository.GetReservasByUsuarioId(usuarioId);
             return Ok(reservas);
         }
@@ -115,7 +132,7 @@ namespace ParkingApp2.API.Controllers
 
             // Calcular las horas de duración
             var duracion = request.FechaFin - request.FechaInicio;
-            var horas = (decimal)duracion.Value.TotalHours;
+            var horas = (decimal)duracion!.Value.TotalHours;
 
             // Calcular el total a pagar
             var totalAPagar = plaza.PrecioHora * horas;
