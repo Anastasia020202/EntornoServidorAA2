@@ -50,7 +50,7 @@ namespace ParkingApp2.Data.Repositories
                 usuarios = usuarios.Where(u => u.Correo.Contains(query.SearchTerm));
             }
 
-            // Aplicar ordenación
+           
             usuarios = query.SortBy?.ToLower() switch
             {
                 "correo" => query.Direction?.ToLower() == "desc" 
@@ -62,7 +62,7 @@ namespace ParkingApp2.Data.Repositories
                 "fechacreacion" => query.Direction?.ToLower() == "desc" 
                     ? usuarios.OrderByDescending(u => u.FechaCreacion)
                     : usuarios.OrderBy(u => u.FechaCreacion),
-                _ => usuarios.OrderBy(u => u.Id) // Ordenación por defecto
+                _ => usuarios.OrderBy(u => u.Id) 
             };
 
             return usuarios

@@ -101,7 +101,7 @@ ParkingApp2/
 - `POST /api/auth/login` - Iniciar sesión
 - `POST /api/auth/register` - Registrarse
 
-**💡 Lógica de Negocio**: Los usuarios no identificados solo ven plazas disponibles para decidir si registrarse y hacer una reserva.
+**Lógica de Negocio**: Los usuarios no identificados solo ven plazas disponibles para decidir si registrarse y hacer una reserva.
 
 ####  Zona Privada (Requiere autenticación)
 - `GET /api/plazas/{id}` - Obtener plaza específica (User/Admin)

@@ -27,20 +27,20 @@ namespace ParkingApp2.Business.Services
 
         public Usuario Register(string correo, string password, string? rol = null)
         {
-            // Verificar si el usuario ya existe
+            //si el usuario ya existe
             var existingUser = _usuarioRepository.GetUsuarioByEmail(correo);
             if (existingUser != null)
             {
                 throw new InvalidOperationException("El usuario ya existe");
             }
 
-            // Hashear la contraseña
+            
             var (hash, salt) = HashPassword(password);
 
-            // Crear nuevo usuario
+            // nuevo usuario
             var usuario = _usuarioRepository.AddUsuarioFromCredentials(correo, hash, salt);
             
-            // Asignar rol (User por defecto, Admin si se especifica)
+            // Asignar rol
             if (!string.IsNullOrEmpty(rol) && rol.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             {
                 usuario.Rol = Roles.Admin;
@@ -89,7 +89,7 @@ namespace ParkingApp2.Business.Services
                     new Claim(ClaimTypes.Name, usuario.Id.ToString()),
                     new Claim(ClaimTypes.Email, usuario.Correo),
                     new Claim(ClaimTypes.Role, usuario.Rol),
-                    new Claim("userId", usuario.Id.ToString()) // Para acceso fácil en controladores
+                    new Claim("userId", usuario.Id.ToString()) 
                 }),
                 Expires = DateTime.UtcNow.AddHours(24),
                 Issuer = "ParkingApp2",

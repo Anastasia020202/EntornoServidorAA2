@@ -58,10 +58,10 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet("mis-vehiculos")]
-        [Authorize(Roles = "User,Admin")] // Zona privada - usuarios pueden ver sus propios vehículos
+        [Authorize(Roles = "User,Admin")] 
         public IActionResult GetMisVehiculos()
         {
-            // Obtener el ID del usuario del token JWT
+           
             var usuarioIdClaim = User.FindFirst("userId")?.Value ?? User.FindFirst(ClaimTypes.Name)?.Value;
             if (string.IsNullOrEmpty(usuarioIdClaim) || !int.TryParse(usuarioIdClaim, out int usuarioId))
             {

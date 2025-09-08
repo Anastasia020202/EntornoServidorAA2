@@ -38,7 +38,7 @@ namespace ParkingApp2.Data.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            // Plazas
+            
             migrationBuilder.CreateTable(
                 name: "Plazas",
                 columns: table => new
@@ -56,7 +56,7 @@ namespace ParkingApp2.Data.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            // Vehiculos
+           
             migrationBuilder.CreateTable(
                 name: "Vehiculos",
                 columns: table => new
@@ -83,7 +83,7 @@ namespace ParkingApp2.Data.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            // Reservas
+            
             migrationBuilder.CreateTable(
                 name: "Reservas",
                 columns: table => new
@@ -123,7 +123,7 @@ namespace ParkingApp2.Data.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            // Índices
+            
             migrationBuilder.CreateIndex(
                 name: "IX_Reservas_PlazaId",
                 table: "Reservas",

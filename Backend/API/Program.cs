@@ -10,7 +10,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -22,7 +22,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "API RESTful para gestión de aparcamiento con autenticación JWT"
     });
 
-    // Configurar autenticación JWT en Swagger
+    
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header usando el esquema Bearer. Ejemplo: \"Authorization: Bearer {token}\"",
@@ -48,7 +48,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Configurar EF Core con MySQL
+// EF Core con MySQL
 builder.Services.AddDbContext<ParkingDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -61,7 +61,7 @@ builder.Services.AddScoped<IPlazaRepository, PlazaRepository>();
 builder.Services.AddScoped<IVehiculoRepository, VehiculoRepository>();
 builder.Services.AddScoped<IReservaRepository, ReservaRepository>();
 
-// Registrar servicios de negocio
+// servicios de negocio
 builder.Services.AddScoped<AuthService>();
 
 // Configurar JWT
@@ -85,7 +85,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Migraciones automáticas para MySQL
+// Migraciones automáticas
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ParkingDbContext>();
@@ -93,7 +93,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-// Swagger disponible en todos los entornos para facilitar pruebas
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {

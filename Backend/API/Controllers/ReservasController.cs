@@ -38,7 +38,7 @@ namespace ParkingApp2.API.Controllers
                 return NotFound(new { message = "Reserva no encontrada" });
             }
 
-            // Devolver un DTO para evitar referencias circulares
+            
             var reservaDto = new ReservaDto
             {
                 Id = reserva.Id,
@@ -63,7 +63,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet("mis-reservas")]
-        [Authorize(Roles = "User,Admin")] // Zona privada - usuarios pueden ver sus propias reservas
+        [Authorize(Roles = "User,Admin")] 
         public IActionResult GetMisReservas()
         {
             // Obtener el ID del usuario del token JWT
@@ -96,24 +96,24 @@ namespace ParkingApp2.API.Controllers
         [HttpPost]
         public IActionResult CreateReserva([FromBody] ReservaCreateDto request)
         {
-            // Obtener la plaza para calcular el precio
+           
             var plaza = _plazaRepository.GetPlazaById(request.PlazaId);
             if (plaza == null)
             {
                 return BadRequest(new { message = "Plaza no encontrada" });
             }
 
-            // Verificar que la plaza esté disponible
+           
             if (!plaza.Disponible)
             {
                 return BadRequest(new { message = "La plaza no está disponible" });
             }
 
-            // Verificar que no haya conflictos de horarios
+            //cnflictos horarios
             var reservasExistentes = _reservaRepository.GetReservasByPlazaId(request.PlazaId);
             foreach (var reservaExistente in reservasExistentes)
             {
-                // Verificar si hay solapamiento de horarios
+                
                 if (reservaExistente.Estado == "Activa" && 
                     request.FechaInicio < reservaExistente.FechaFin && 
                     request.FechaFin > reservaExistente.FechaInicio)
@@ -124,13 +124,13 @@ namespace ParkingApp2.API.Controllers
                 }
             }
 
-            // Validar que la fecha de fin sea posterior a la de inicio
+            
             if (request.FechaFin <= request.FechaInicio)
             {
                 return BadRequest(new { message = "La fecha de fin debe ser posterior a la fecha de inicio" });
             }
 
-            // Calcular las horas de duración
+          
             var duracion = request.FechaFin - request.FechaInicio;
             var horas = (decimal)duracion!.Value.TotalHours;
 
@@ -151,7 +151,7 @@ namespace ParkingApp2.API.Controllers
             _reservaRepository.AddReserva(reserva);
             _reservaRepository.SaveChanges();
 
-            // Devolver un DTO para evitar referencias circulares
+            
             var reservaDto = new ReservaDto
             {
                 Id = reserva.Id,

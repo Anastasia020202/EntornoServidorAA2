@@ -44,7 +44,7 @@ namespace ParkingApp2.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "User,Admin")] // Zona privada - información de plaza específica solo para usuarios autenticados
+        [Authorize(Roles = "User,Admin")] // Zona privada - información de plaza específica solo para usuarios loggeados
         public IActionResult GetPlazaById(int id)
         {
             var plaza = _plazaRepository.GetPlazaById(id);
